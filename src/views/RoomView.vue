@@ -19,6 +19,7 @@ interface Data {
   timeCounter: any
   turn: number
   match: number
+  lastTime: number
   firstPos: {
     x: Number
     y: Number
@@ -62,7 +63,8 @@ export default {
       secondPos: {
         x: 0,
         y: 0
-      }
+      },
+      lastTime: 0
     }
   },
   methods: {
@@ -120,8 +122,6 @@ export default {
           this.setPairFound(this.temp[1])
           this.match++
 
-          console.log('first ;', this.firstPos)
-          console.log('second ;', this.secondPos)
           confetti({
             particleCount: 100,
             spread: 120,
@@ -146,11 +146,9 @@ export default {
           })
 
           if (this.checkAllPaired()) {
+            this.lastTime = this.count
             this.endState = true
             this.launchConfetti()
-            setTimeout(() => {
-              this.restart()
-            }, 300000)
           }
         }
 
@@ -254,25 +252,6 @@ export default {
       ref="confettiCanvas"
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none"
     ></canvas>
-    <!-- <div
-      style="
-        width: 80%;
-        height: 80%;
-        z-index: 1000;
-        background-image: url('/src/assets/image/congratulation.png');
-        background-size: 100% 100%;
-        animation: anim 0.4s ease-in-out forwards;
-        margin: auto;
-        align-items: center;
-        justify-content: center;
-      "
-      :style="{
-        display: endState ? 'block' : 'none',
-        opacity: endState ? 1 : 0
-      }"
-    >
-      <button style="margin: auto">Restart</button>
-    </div> -->
     <div
       style="width: 100%; height: 100%; flex-direction: column"
       :style="{ display: endState ? 'flex' : 'none' }"
@@ -281,7 +260,32 @@ export default {
         src="/src/assets/image/congratulation.png"
         style="width: 80%; height: 60%; margin: auto"
       />
-      <div style="display: flex; align-items: center; justify-content: center; height: 200px">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 200px;
+          position: relative;
+        "
+      >
+        <div
+          style="
+            margin: auto;
+            position: absolute;
+            top: -70px;
+            background-image: url('/src/assets/image/wood.jpg');
+            padding: 10px 20px 10px 20px;
+            border-radius: 10px;
+          "
+        >
+          <span>
+            <h1>Time : {{ lastTime }}</h1>
+          </span>
+          <span>
+            <h1>Turn : {{ turn }}</h1>
+          </span>
+        </div>
         <div
           style="
             background-image: url('/src/assets/image/play.png');
@@ -423,7 +427,6 @@ h1 {
 }
 .container {
   margin: auto;
-  /* max-width: 800px; */
   height: 80%;
   display: grid;
   flex-grow: 1;

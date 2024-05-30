@@ -26,23 +26,12 @@ export default {
       <div style="flex-grow: 1; height: 100%">
         <img src="/src/assets/image/selectcard.png" style="width: 100%; height: 80%" />
       </div>
-      <!-- <div style="width: 150px; height: 100px; justify-content: center"> -->
       <img
         src="/src/assets/image/home.png"
-        style="cursor: pointer; width: 100px; height: 100px"
+        style="cursor: pointer; margin-top: -50px"
         @click="navigateBack()"
         class="back-icon"
       />
-      <!-- </div> -->
-      <!-- <img src="/src/assets/image/selectcard.png" style="flex-grow: 1" />
-      <div style="justify-content: center">
-        <img
-          src="/src/assets/image/home.png"
-          style="cursor: pointer; width: 100px; height: 100px"
-          @click="navigateBack()"
-          class="back-icon"
-        />
-      </div> -->
     </div>
     <div :class="$style['list-container']">
       <div
@@ -91,8 +80,9 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
+  max-height: 100px;
   background-size: 100% 100%;
-  background-position: center; /* Center the image within the div */
+  background-position: center;
   background-repeat: no-repeat;
   justify-content: center;
   align-items: center;
@@ -102,7 +92,21 @@ export default {
   cursor: pointer;
 }
 .list-container {
+  padding: 20px;
   display: flex;
   grid-template-columns: 1 2 2 1;
+}
+.back-icon {
+  width: 100px;
+  height: 100px;
+}
+@media screen and (max-width: 700px) {
+  .number-button {
+    font-size: 20px;
+  }
+  .back-icon {
+    width: 50px;
+    height: 50px;
+  }
 }
 </style>
