@@ -35,18 +35,18 @@ export default {
     return {
       cardList: [],
       cardsInfo: [
-        '/src/assets/image/1.jpg',
-        '/src/assets/image/2.jpg',
-        '/src/assets/image/3.jpg',
-        '/src/assets/image/4.jpg',
-        '/src/assets/image/5.jpg',
-        '/src/assets/image/6.png',
-        '/src/assets/image/7.jpg',
-        '/src/assets/image/8.jpg',
-        '/src/assets/image/9.jpg',
-        '/src/assets/image/10.jpg',
-        '/src/assets/image/11.jpg',
-        '/src/assets/image/12.jpg'
+        '/assets/image/1.jpg',
+        '/assets/image/2.jpg',
+        '/assets/image/3.jpg',
+        '/assets/image/4.jpg',
+        '/assets/image/5.jpg',
+        '/assets/image/6.png',
+        '/assets/image/7.jpg',
+        '/assets/image/8.jpg',
+        '/assets/image/9.jpg',
+        '/assets/image/10.jpg',
+        '/assets/image/11.jpg',
+        '/assets/image/12.jpg'
       ],
       cards: [],
       temp: [],
@@ -243,7 +243,7 @@ export default {
       height: 100%;
       display: flex;
       flex-direction: column;
-      background-image: url('/src/assets/image/background.png');
+      background-image: url('/assets/image/background.jpg');
       background-size: cover;
       position: relative;
     "
@@ -256,10 +256,7 @@ export default {
       style="width: 100%; height: 100%; flex-direction: column"
       :style="{ display: endState ? 'flex' : 'none' }"
     >
-      <img
-        src="/src/assets/image/congratulation.png"
-        style="width: 80%; height: 60%; margin: auto"
-      />
+      <img src="/assets/image/congratulation.png" style="width: 80%; height: 60%; margin: auto" />
       <div
         style="
           display: flex;
@@ -274,7 +271,7 @@ export default {
             margin: auto;
             position: absolute;
             top: -70px;
-            background-image: url('/src/assets/image/wood.jpg');
+            background-image: url('/assets/image/wood.jpg');
             padding: 10px 20px 10px 20px;
             border-radius: 10px;
           "
@@ -288,7 +285,7 @@ export default {
         </div>
         <div
           style="
-            background-image: url('/src/assets/image/play.png');
+            background-image: url('/assets/image/play.png');
             background-size: 100% 100%;
             width: 250px;
             height: 190px;
@@ -299,9 +296,9 @@ export default {
       </div>
     </div>
     <div class="header" :style="{ display: endState ? 'none' : 'flex' }">
-      <img src="/src/assets/image/title.png" style="flex-grow: 1; height: 100%" />
+      <img src="/assets/image/title.png" style="flex-grow: 1; height: 100%" />
       <img
-        src="/src/assets/image/home.png"
+        src="/assets/image/home.png"
         style="cursor: pointer"
         @click="navigateBack()"
         class="back-icon"
@@ -358,7 +355,7 @@ export default {
   align-items: center;
 }
 .woodboard {
-  background-image: url('/src/assets/image/wood.jpg');
+  background-image: url('/assets/image/wood.jpg');
   border-radius: 10px;
   margin-bottom: 20px;
   padding: 1px;
@@ -391,7 +388,7 @@ h1 {
   opacity: 70%;
 }
 .front {
-  background-image: url('/src/assets/image/question.jpg');
+  background-image: url('/assets/image/question.jpg');
   background-size: 100% 100%;
   width: 100%;
   height: 100%;

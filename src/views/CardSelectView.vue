@@ -18,16 +18,16 @@ export default {
       display: grid;
       grid-template-rows: 1 1;
       height: 100%;
-      background-image: url('/src/assets/image/background.png');
+      background-image: url('/assets/image/background.jpg');
       background-size: cover;
     "
   >
     <div style="display: flex; width: 100%; flex-direction: row; align-items: center">
       <div style="flex-grow: 1; height: 100%">
-        <img src="/src/assets/image/selectcard.png" style="width: 100%; height: 80%" />
+        <img src="/assets/image/selectcard.png" style="width: 100%; height: 80%" />
       </div>
       <img
-        src="/src/assets/image/home.png"
+        src="/assets/image/home.png"
         style="cursor: pointer; margin-top: -50px; max-width: 100px"
         @click="navigateBack()"
         class="back-icon"
@@ -36,14 +36,14 @@ export default {
     <div :class="$style['list-container']">
       <div
         :class="$style['number-button']"
-        style="background-image: url('/src/assets/image/button.png')"
+        style="background-image: url('/assets/image/button.png')"
         @click="navigate(2)"
       >
         2
       </div>
       <div
         :class="$style['number-button']"
-        style="background-image: url('/src/assets/image/button.png')"
+        style="background-image: url('/assets/image/button.png')"
         @click="navigate(4)"
       >
         4
@@ -51,21 +51,21 @@ export default {
       <div
         :class="$style['number-button']"
         @click="navigate(6)"
-        style="background-image: url('/src/assets/image/button.png')"
+        style="background-image: url('/assets/image/button.png')"
       >
         6
       </div>
       <div
         :class="$style['number-button']"
         @click="navigate(9)"
-        style="background-image: url('/src/assets/image/button.png')"
+        style="background-image: url('/assets/image/button.png')"
       >
         9
       </div>
       <div
         :class="$style['number-button']"
         @click="navigate(12)"
-        style="background-image: url('/src/assets/image/button.png')"
+        style="background-image: url('/assets/image/button.png')"
       >
         12
       </div>

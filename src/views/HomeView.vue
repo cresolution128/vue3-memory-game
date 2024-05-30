@@ -15,12 +15,12 @@ export default {
       display: grid;
       grid-template-rows: 1 1;
       height: 100%;
-      background-image: url('/src/assets/image/background.png');
+      background-image: url('/assets/image/background.jpg');
       background-size: cover;
     "
   >
     <div>
-      <img src="/src/assets/image/title.png" style="width: 100%; height: 80%" />
+      <img src="/assets/image/title.png" style="width: 100%; height: 80%" />
     </div>
     <div :class="$style['container']">
       <div
@@ -35,7 +35,7 @@ export default {
         "
       >
         <img
-          src="/src/assets/image/1.jpg"
+          src="/assets/image/1.jpg"
           style="
             width: 150%;
             height: 100%;
@@ -46,7 +46,7 @@ export default {
           "
         />
         <img
-          src="/src/assets/image/2.jpg"
+          src="/assets/image/2.jpg"
           style="
             width: 150%;
             height: 100%;
@@ -57,7 +57,7 @@ export default {
           "
         />
         <img
-          src="/src/assets/image/3.jpg"
+          src="/assets/image/3.jpg"
           style="
             width: 150%;
             height: 100%;
@@ -68,7 +68,7 @@ export default {
           "
         />
         <img
-          src="/src/assets/image/4.jpg"
+          src="/assets/image/4.jpg"
           style="
             width: 150%;
             height: 100%;
@@ -78,7 +78,7 @@ export default {
             transform: rotateZ(10deg);
           "
         /><img
-          src="/src/assets/image/5.jpg"
+          src="/assets/image/5.jpg"
           style="
             width: 150%;
             height: 100%;
@@ -89,7 +89,7 @@ export default {
           "
         />
         <img
-          src="/src/assets/image/6.png"
+          src="/assets/image/6.png"
           style="
             width: 150%;
             height: 100%;
@@ -103,7 +103,7 @@ export default {
       <div :class="$style['number-button']">
         <div
           :class="$style['start-button']"
-          style="background-image: url('/src/assets/image/play.png'); background-color: transparent"
+          style="background-image: url('/assets/image/play.png'); background-color: transparent"
           @click="navigate()"
         ></div>
       </div>
