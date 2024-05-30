@@ -1,5 +1,7 @@
 <script lang="ts">
 import confetti from 'canvas-confetti'
+import { useTimerStore } from '../stores/timer'
+import { mapActions, mapState, mapStores } from 'pinia'
 interface Card {
   id: number
   content: string
@@ -14,6 +16,17 @@ interface Data {
   temp: Card[]
   cardNum: number
   endState: boolean
+  timeCounter: any
+  turn: number
+  match: number
+  firstPos: {
+    x: Number
+    y: Number
+  }
+  secondPos: {
+    x: Number
+    y: Number
+  }
 }
 export default {
   name: 'RoomView',
@@ -38,12 +51,25 @@ export default {
       temp: [],
       flippedList: [],
       cardNum: 2,
-      endState: false
+      endState: false,
+      timeCounter: null,
+      turn: 0,
+      match: 0,
+      firstPos: {
+        x: 0,
+        y: 0
+      },
+      secondPos: {
+        x: 0,
+        y: 0
+      }
     }
   },
   methods: {
+    ...mapActions(useTimerStore, ['increment', 'resetTimer']),
     launchConfetti() {
-      const myConfetti = confetti.create(this.$refs.confettiCanvas, {
+      const canvasElement: any = this.$refs.confettiCanvas
+      const myConfetti = confetti.create(canvasElement, {
         resize: true,
         useWorker: true
       })
@@ -55,7 +81,7 @@ export default {
       })
     },
     navigateBack() {
-      this.$router.replace({ name: 'home' })
+      this.$router.replace({ name: 'card-select' })
     },
     gridMake(num: number) {
       switch (num) {
@@ -74,24 +100,61 @@ export default {
     shuffle(cards: Card[]) {
       return cards.sort(() => Math.random() - 0.5)
     },
-    handleClick(card: Card) {
+    handleClick(e: any, card: Card) {
       if (this.temp.length === 0) {
         if (card.isPairFound) return
         this.temp.push(card)
+        this.firstPos = {
+          x: e.clientX,
+          y: e.clientY
+        }
       } else if (this.temp.length === 1) {
         if (this.temp[0].id === card.id || card.isPairFound) return
         this.temp.push(card)
         if (this.temp[0].content === this.temp[1].content) {
+          this.secondPos = {
+            x: e.clientX,
+            y: e.clientY
+          }
           this.setPairFound(this.temp[0])
           this.setPairFound(this.temp[1])
+          this.match++
+
+          console.log('first ;', this.firstPos)
+          console.log('second ;', this.secondPos)
+          confetti({
+            particleCount: 100,
+            spread: 120,
+            origin: {
+              x: this.firstPos.x.valueOf() / window.innerWidth,
+              y: this.firstPos.y.valueOf() / window.innerHeight
+            },
+            startVelocity: 15,
+            gravity: 0.3,
+            scalar: 0.7
+          })
+          confetti({
+            particleCount: 100,
+            spread: 120,
+            origin: {
+              x: this.secondPos.x.valueOf() / window.innerWidth,
+              y: this.secondPos.y.valueOf() / window.innerHeight
+            },
+            startVelocity: 15,
+            gravity: 0.3,
+            scalar: 0.7
+          })
+
           if (this.checkAllPaired()) {
             this.endState = true
             this.launchConfetti()
             setTimeout(() => {
               this.restart()
-            }, 3000)
+            }, 300000)
           }
         }
+
+        this.turn++
         setTimeout(() => {
           this.temp = []
         }, 700)
@@ -122,6 +185,10 @@ export default {
       else return false
     },
     restart() {
+      this.navigateBack()
+      this.turn = 0
+      this.match = 0
+      this.resetTimer()
       this.endState = false
       this.cardList = this.cardList.map((item) => {
         return {
@@ -138,7 +205,9 @@ export default {
   computed: {
     playerNum() {
       return this.$route.params.number
-    }
+    },
+    ...mapStores(useTimerStore),
+    ...mapState(useTimerStore, ['count'])
   },
   mounted() {
     const param = this.$route.params.number
@@ -159,6 +228,13 @@ export default {
       })
     )
     this.cardList = this.shuffle(this.cards)
+    this.timeCounter = setInterval(() => {
+      this.increment()
+    }, 1000)
+  },
+  beforeUnmount() {
+    this.resetTimer()
+    clearInterval(this.timeCounter)
   }
 }
 </script>
@@ -171,13 +247,14 @@ export default {
       flex-direction: column;
       background-image: url('/src/assets/image/background.png');
       background-size: cover;
+      position: relative;
     "
   >
     <canvas
       ref="confettiCanvas"
-      style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none"
     ></canvas>
-    <div
+    <!-- <div
       style="
         width: 80%;
         height: 80%;
@@ -186,16 +263,38 @@ export default {
         background-size: 100% 100%;
         animation: anim 0.4s ease-in-out forwards;
         margin: auto;
+        align-items: center;
+        justify-content: center;
       "
       :style="{
         display: endState ? 'block' : 'none',
         opacity: endState ? 1 : 0
       }"
-    ></div>
-    <div
-      style="height: 100px; flex-direction: row"
-      :style="{ display: endState ? 'none' : 'flex' }"
     >
+      <button style="margin: auto">Restart</button>
+    </div> -->
+    <div
+      style="width: 100%; height: 100%; flex-direction: column"
+      :style="{ display: endState ? 'flex' : 'none' }"
+    >
+      <img
+        src="/src/assets/image/congratulation.png"
+        style="width: 80%; height: 60%; margin: auto"
+      />
+      <div style="display: flex; align-items: center; justify-content: center; height: 200px">
+        <div
+          style="
+            background-image: url('/src/assets/image/play.png');
+            background-size: 100% 100%;
+            width: 250px;
+            height: 190px;
+            cursor: pointer;
+          "
+          @click="restart()"
+        ></div>
+      </div>
+    </div>
+    <div class="header" :style="{ display: endState ? 'none' : 'flex' }">
       <img src="/src/assets/image/title.png" style="flex-grow: 1; height: 100%" />
       <img
         src="/src/assets/image/home.png"
@@ -204,15 +303,44 @@ export default {
         class="back-icon"
       />
     </div>
-    <div :class="['container']" :style="{ gridTemplateColumns: `${gridMake(cardNum)}` }">
-      <div
-        v-for="(card, index) in cardList"
-        :class="['card', checkFlipped(card), checkPaired(card)]"
-        :key="index"
-        @click="handleClick(card)"
-      >
-        <div :class="['front']"></div>
-        <div class="back" :style="{ backgroundImage: `url(${card.content})` }"></div>
+    <div
+      :class="['container1']"
+      style="grid-template-columns: 1fr 4fr 1fr"
+      :style="{
+        display: endState ? 'none' : 'grid'
+      }"
+    >
+      <div style="height: 100%">
+        <div style="height: 100%"></div>
+      </div>
+      <div :class="['container']" :style="{ gridTemplateColumns: `${gridMake(cardNum)}` }">
+        <div
+          v-for="(card, index) in cardList"
+          :class="['card', checkFlipped(card), checkPaired(card)]"
+          :key="index"
+          @click="(e) => handleClick(e, card)"
+        >
+          <div>
+            <div :class="['front']"></div>
+            <div class="back" :style="{ backgroundImage: `url(${card.content})` }"></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top: 50px; text-align: center; padding: 10px; font-family: cursive">
+        <div class="woodboard first">
+          <h1>Time</h1>
+          <h2>{{ count }}</h2>
+        </div>
+
+        <div class="woodboard">
+          <h1>Turns</h1>
+          <h2>{{ turn }}</h2>
+        </div>
+
+        <div class="woodboard">
+          <h1>Matches</h1>
+          <h2>{{ match }}</h2>
+        </div>
       </div>
     </div>
   </div>
@@ -220,6 +348,28 @@ export default {
   <div style=""></div>
 </template>
 <style>
+.header {
+  height: 180px;
+  flex-direction: row;
+  align-items: center;
+}
+.woodboard {
+  background-image: url('/src/assets/image/wood.jpg');
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 1px;
+}
+h2 {
+  margin-top: 3px;
+  margin-bottom: 1px;
+  color: wheat;
+}
+h1 {
+  font-size: 29px;
+  color: burlywood;
+  margin-top: 1px;
+  margin-bottom: 3px;
+}
 .card {
   display: flex;
   position: relative;
@@ -273,11 +423,22 @@ export default {
 }
 .container {
   margin: auto;
-  max-width: 800px;
+  /* max-width: 800px; */
+  height: 80%;
   display: grid;
   flex-grow: 1;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  padding: 50px;
+  column-gap: 10px;
+  row-gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.container1 {
+  margin: auto;
+  width: 100%;
+  max-width: 800px;
+  display: grid;
+  flex-grow: 1;
   column-gap: 10px;
   row-gap: 10px;
   justify-content: center;
@@ -312,6 +473,9 @@ export default {
 }
 
 @media screen and (max-width: 700px) {
+  .header {
+    height: 100px;
+  }
   .start-button {
     margin: auto;
     display: flex;
@@ -325,13 +489,23 @@ export default {
     min-width: 100px;
   }
   .container {
-    padding: 25px;
     column-gap: 3px;
     row-gap: 3px;
   }
   .back-icon {
     width: 50px;
     height: 50px;
+  }
+  h1 {
+    font-size: 17px;
+  }
+  h2 {
+    font-size: 15px;
+  }
+  .woodboard {
+    border-radius: 10px;
+    margin-bottom: 5px;
+    padding: 1px;
   }
 }
 @keyframes anim {

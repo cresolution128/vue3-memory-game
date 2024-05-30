@@ -4,6 +4,9 @@ export default {
   methods: {
     navigate(num: number) {
       this.$router.replace({ name: 'room', params: { number: num } })
+    },
+    navigateBack() {
+      this.$router.replace({ name: 'home' })
     }
   }
 }
@@ -19,8 +22,27 @@ export default {
       background-size: cover;
     "
   >
-    <div>
-      <img src="/src/assets/image/selectcard.png" style="width: 100%; height: 80%" />
+    <div style="display: flex; width: 100%; flex-direction: row; align-items: center">
+      <div style="flex-grow: 1; height: 100%">
+        <img src="/src/assets/image/selectcard.png" style="width: 100%; height: 80%" />
+      </div>
+      <!-- <div style="width: 150px; height: 100px; justify-content: center"> -->
+      <img
+        src="/src/assets/image/home.png"
+        style="cursor: pointer; width: 100px; height: 100px"
+        @click="navigateBack()"
+        class="back-icon"
+      />
+      <!-- </div> -->
+      <!-- <img src="/src/assets/image/selectcard.png" style="flex-grow: 1" />
+      <div style="justify-content: center">
+        <img
+          src="/src/assets/image/home.png"
+          style="cursor: pointer; width: 100px; height: 100px"
+          @click="navigateBack()"
+          class="back-icon"
+        />
+      </div> -->
     </div>
     <div :class="$style['list-container']">
       <div
