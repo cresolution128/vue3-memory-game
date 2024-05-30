@@ -28,7 +28,7 @@ export default {
       </div>
       <img
         src="/src/assets/image/home.png"
-        style="cursor: pointer; margin-top: -50px"
+        style="cursor: pointer; margin-top: -50px; max-width: 100px"
         @click="navigateBack()"
         class="back-icon"
       />
